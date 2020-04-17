@@ -1,5 +1,7 @@
 #include<iostream>
-int main()
+int main(int argl,char**argv)
 {
-    std::cout<<"Hello World!\n";
+	std::string command;
+	std::cin >> command;
+	return 0;
 }
