@@ -1,4 +1,5 @@
 #include<CommandParser.hpp>
+#include<iostream>
 Command::Command()
 {
     this->calls = 0;
@@ -48,7 +49,7 @@ Command& CommandParser::operator[](const std::string& str)
 std::string CommandParser::operator()(std::string* args, const size_t& len)
 {
     std::string ans = "That command was not found!";
-    if (cmds->find(args[0]) == cmds->end())
+    if (cmds->find(args[0]) != cmds->end())
     {
         ans = (*(*cmds)[args[0]])(args + 1, len);
     }

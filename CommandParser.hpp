@@ -10,7 +10,7 @@ public:
     Command(const Command&) = default;
     Command(Command&&) = default;
     Command& operator=(Command);
-    virtual std::string run(std::string*,const size_t&,const size_t&);
+    virtual std::string run(std::string*, const size_t&, const size_t&) { return""; }
     std::string run0(std::string*, const size_t& len);
     std::string operator()(std::string* args, const size_t& len)
     {
