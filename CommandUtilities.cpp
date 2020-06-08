@@ -2,6 +2,7 @@
 #include<sstream>
 #include<vector>
 #include<CommandParser.hpp>
+#include <TriangleSolver.hpp>
 struct StringHasher :public Command
 {
     std::string run(std::string* args, const size_t& size, const size_t& calls)
@@ -62,12 +63,12 @@ struct ProbZ :public Command
 
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz" };
+    std::string names[] = { "jhash","zprob","probz","solvet" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz };
-    CommandParser parser(names,cmds,3);
+    Command* cmds[] = { strh, zp, pz, new TriangleSolver() };
+    CommandParser parser(names, cmds, 4);
     std::string command;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;

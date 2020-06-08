@@ -1,5 +1,4 @@
 #include<CommandParser.hpp>
-#include<iostream>
 Command::Command()
 {
     this->calls = 0;
