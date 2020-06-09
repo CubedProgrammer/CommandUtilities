@@ -61,14 +61,33 @@ struct ProbZ :public Command
     }
 };
 
+struct MeanStdevProb :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size < 3)
+            return "You must pass in the mean, standard deviation, and the value, in that order.";
+        using namespace std;
+        double mean = stod(args[0], nullptr), stdev = stod(args[1], nullptr), v = stod(args[2], nullptr);
+        double z = (v - mean) / stdev;
+        double ans = 0.5 + erf(z / sqrt(2)) / 2;
+
+        ostringstream oss("");
+        oss.precision(15);
+        oss << "z-score is " << z << endl;
+        oss << "probability is " << ans;
+        return oss.str();
+    }
+};
+
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","solvet" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz, new TriangleSolver() };
-    CommandParser parser(names, cmds, 4);
+    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver() };
+    CommandParser parser(names, cmds, 5);
     std::string command;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;

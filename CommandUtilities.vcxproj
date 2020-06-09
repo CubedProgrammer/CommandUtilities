@@ -82,6 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Kevin\source\repos\CommandUtilities;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -148,11 +149,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ATS.c" />
     <ClCompile Include="CommandParser.cpp" />
     <ClCompile Include="CommandUtilities.cpp" />
+    <ClCompile Include="TriangleSolver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandParser.hpp" />
+    <ClInclude Include="TriangleSolver.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
