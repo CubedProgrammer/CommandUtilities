@@ -3,6 +3,12 @@
 #include<vector>
 #include<CommandParser.hpp>
 #include <TriangleSolver.hpp>
+
+extern"C"
+{
+    void vector_polar_addition(double angles[], double mags[], unsigned size, double* angle, double* mag);
+}
+
 struct StringHasher :public Command
 {
     std::string run(std::string* args, const size_t& size, const size_t& calls)
@@ -80,14 +86,41 @@ struct MeanStdevProb :public Command
     }
 };
 
+struct VectorPolarAddition :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size % 2 != 0)
+            return "You must pass in an even number of args.";
+        double* angles = new double[size / 2];
+        double* mags = new double[size / 2];
+        double angle, mag;
+        for (size_t i = 0; i < size; i++)
+        {
+            if (i % 2 != 0)
+                mags[i / 2] = std::stod(args[i]);
+            else
+                angles[i / 2] = std::stod(args[i]) * 3.1415926535897932 / 180;
+        }
+        vector_polar_addition(angles, mags, size / 2, &angle, &mag);
+        delete[]angles;
+        delete[]mags;
+
+        angle *= 180 / 3.1415926535897932;
+        std::ostringstream oss;
+        oss << angle << "degrees , " << mag;
+        return oss.str();
+    }
+};
+
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver() };
-    CommandParser parser(names, cmds, 5);
+    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition() };
+    CommandParser parser(names, cmds, 6);
     std::string command;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;
