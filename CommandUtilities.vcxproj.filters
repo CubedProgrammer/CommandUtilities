@@ -27,6 +27,9 @@
     <ClCompile Include="ATS.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vector_polar_addition.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandParser.hpp">

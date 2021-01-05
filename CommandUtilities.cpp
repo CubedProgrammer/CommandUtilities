@@ -113,14 +113,59 @@ struct VectorPolarAddition :public Command
     }
 };
 
+struct StringReversal :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size < 1)
+            return "Pass in a string.";
+        using namespace std;
+        reverse(args->begin(), args->end());
+        return *args;
+    }
+};
+
+struct WordPyramid :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size < 1)
+            return "Pass in a string.";
+        using namespace std;
+        auto& str = *args;
+        ostringstream oss;
+        for (size_t i = 0; i < str.size(); i++)
+            oss << str.substr(0, i + 1) << "\n";
+        for (size_t i = str.size() - 1; i > 0; i--)
+            oss << str.substr(0, i) << "\n";
+        return oss.str();
+    }
+};
+
+struct StringDuper :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size < 2)
+            return "Pass in a string and a number.";
+        using namespace std;
+        auto& str = *args;
+        int x = stoi(args[1]);
+        string o;
+        for (int i = 0; i < x; i++)
+            o += str;
+        return o;
+    }
+};
+
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition() };
-    CommandParser parser(names, cmds, 6);
+    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper() };
+    CommandParser parser(names, cmds, 9);
     std::string command;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;

@@ -153,6 +153,7 @@
     <ClCompile Include="CommandParser.cpp" />
     <ClCompile Include="CommandUtilities.cpp" />
     <ClCompile Include="TriangleSolver.cpp" />
+    <ClCompile Include="vector_polar_addition.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandParser.hpp" />
