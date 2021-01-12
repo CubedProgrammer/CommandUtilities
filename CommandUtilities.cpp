@@ -1,12 +1,17 @@
+#include<algorithm>
+#include<cmath>
+#include<fstream>
 #include<iostream>
 #include<sstream>
 #include<vector>
 #include<CommandParser.hpp>
 #include <TriangleSolver.hpp>
-
 extern"C"
 {
     void vector_polar_addition(double angles[], double mags[], unsigned size, double* angle, double* mag);
+    int move(const char *from, const char *to);
+    int del(const char *file);
+    int rmdir(const char *dir);
 }
 
 struct StringHasher :public Command
@@ -158,14 +163,45 @@ struct StringDuper :public Command
     }
 };
 
+struct SetTrash :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size < 1)
+            return "Name a directory to be your trash directory.";
+        using namespace std;
+        auto& str = *args;
+        ofstream ofs("trash.txt");
+        ofs << str << endl;
+        ofs.close();
+        return "If you only see this message, it worked.";
+    }
+};
+
+struct TempDelete :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size < 1)
+            return "Name a directory to be your trash directory.";
+        using namespace std;
+        auto& str = *args;
+        string dir;
+        ifstream ifs("trash.txt");
+        ifs >> dir;
+        ifs.close();
+        return "If you only see this message, it worked.";
+    }
+};
+
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper() };
-    CommandParser parser(names, cmds, 9);
+    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash() };
+    CommandParser parser(names, cmds, 10);
     std::string command;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;
