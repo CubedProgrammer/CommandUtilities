@@ -188,20 +188,25 @@ struct TempDelete :public Command
         auto& str = *args;
         string dir;
         ifstream ifs("trash.txt");
+        if (!ifs)
+            return "Set the trash folder first you imbecile";
         ifs >> dir;
         ifs.close();
-        return "If you only see this message, it worked.";
+        int r = move(str.c_str(), dir.c_str());
+        if (r)
+            return "Something went terribly wrong, check if you have permission, or if the file is read only.";
+        return "It worked.";
     }
 };
 
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash() };
-    CommandParser parser(names, cmds, 10);
+    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete() };
+    CommandParser parser(names, cmds, 11);
     std::string command;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;
@@ -223,6 +228,13 @@ int main(int argl,char**argv)
         is=std::istringstream(command);
     }
     std::cout << "Program has terminated." << std::endl;
+#ifdef _WIN32
     std::system("pause");
+#else
+    std::cout << "Press enter to continue.";
+    std::cout.flush();
+    char __tmp__;
+    std::cin.get(__tmp__);
+#endif
     return 0;
 }

@@ -7,7 +7,7 @@ static const char rmc[] = "rm ";
 static const char rmd[] = "rm -r ";
 #elif defined _WIN32
 // commands on windows
-static const char mvc[] = "move /y";
+static const char mvc[] = "move /y ";
 static const char rmc[] = "del ";
 static const char rmd[] = "rmdir /s /q ";
 #endif
