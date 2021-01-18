@@ -9,6 +9,7 @@
 extern"C"
 {
     void vector_polar_addition(double angles[], double mags[], unsigned size, double* angle, double* mag);
+    int file_word_counter(const char *fn, const char *wrd);
     int move(const char *from, const char *to);
     int del(const char *file);
     int rmdir(const char *dir);
@@ -199,14 +200,30 @@ struct TempDelete :public Command
     }
 };
 
+struct FileWordCounter :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size < 2)
+            return "Name a file and a word.";
+        using namespace std;
+        auto& fn = args[0];
+        auto& wrd = args[1];
+        int cnt = file_word_counter(fn.c_str(), wrd.c_str());
+        ostringstream oss;
+        oss << cnt;
+        return oss.str();
+    }
+};
+
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete() };
-    CommandParser parser(names, cmds, 11);
+    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter() };
+    CommandParser parser(names, cmds, 12);
     std::string command;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;
