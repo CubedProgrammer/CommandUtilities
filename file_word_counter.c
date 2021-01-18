@@ -9,6 +9,7 @@ int file_word_counter(const char *fn, const char *wrd)
 	cbuf[size] = '\0';
 	const char *res = strstr(cbuf, wrd);
 	int cnt = 0;
+	fclose(fhandle);
 	while(res)
 	{
 		++cnt;
