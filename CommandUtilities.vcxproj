@@ -153,6 +153,7 @@
     <ClCompile Include="CommandParser.cpp" />
     <ClCompile Include="CommandUtilities.cpp" />
     <ClCompile Include="delete.c" />
+    <ClCompile Include="file_word_counter.c" />
     <ClCompile Include="TriangleSolver.cpp" />
     <ClCompile Include="vector_polar_addition.c" />
   </ItemGroup>
