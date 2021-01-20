@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 #define SIZE 1000000
-char cbuf[1000000];
+static char cbuf[1000000];
 int file_word_counter(const char *fn, const char *wrd)
 {
     FILE *fhandle = fopen(fn, "r");
