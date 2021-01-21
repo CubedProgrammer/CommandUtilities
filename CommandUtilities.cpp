@@ -12,6 +12,7 @@ extern"C"
     void vector_cylindrical_addition(double angles[], double mags[], double zs[], unsigned size, double* angle, double* mag, double* z);
     int file_word_counter(const char *fn, const char *wrd);
     void file_word_replace(const char *fn, const char *wrd, const char *rep);
+    void list_file_generator(int lns, const char *fn);
     int move(const char *from, const char *to);
     int del(const char *file);
     int rmdir(const char *dir);
@@ -264,14 +265,25 @@ struct FileWordReplace :public Command
     }
 };
 
+struct ListFileGenerator :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size < 2)
+            return "Put the number and then output file.";
+        list_file_generator(std::stoi(args[0]), args[1].c_str());
+        return "Look at your file.";
+    }
+};
+
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace() };
-    CommandParser parser(names, cmds, 14);
+    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace(), new ListFileGenerator() };
+    CommandParser parser(names, cmds, 15);
     std::string command;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;
