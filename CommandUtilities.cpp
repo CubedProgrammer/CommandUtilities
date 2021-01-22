@@ -276,14 +276,41 @@ struct ListFileGenerator :public Command
     }
 };
 
+struct PrimeNumberListGenerator :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size < 2)
+            return "Put the number and then output file.";
+        long long num = std::stoll(args[0]);
+        std::vector<bool>sieve(num + 1, true);
+        for(long long i = 2; i <= num; i++)
+        {
+            if(sieve[i])
+            {
+                for(long long j = i * i; j <= num; j += i)
+                    sieve[j] = false;
+            }
+        }
+        std::ofstream ofs(args[1]);
+        for(long long i = 2; i <= num; i++)
+        {
+            if(sieve[i])
+                ofs << i << '\n';
+        }
+        ofs.close();
+        return "Look at your file.";
+    }
+};
+
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace(), new ListFileGenerator() };
-    CommandParser parser(names, cmds, 15);
+    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace(), new ListFileGenerator(), new PrimeNumberListGenerator() };
+    CommandParser parser(names, cmds, 16);
     std::string command;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;
