@@ -36,6 +36,12 @@
     <ClCompile Include="file_word_counter.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="list_file_generator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file_word_replace.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandParser.hpp">
