@@ -336,8 +336,13 @@ struct DoubleBits :public Command
         using namespace std;
         double x = stod(args[0]);
         ostringstream oss;
-        oss << hex << "0x" << *(long long unsigned*) & x;
-        return oss.str();
+        oss << hex << *(long long unsigned*) & x;
+        auto str = oss.str();
+        reverse(str.begin(),str.end());
+        while(str.size()<16)
+            str.push_back('0');
+        reverse(str.begin(),str.end());
+        return "0x" + str;
     }
 };
 
