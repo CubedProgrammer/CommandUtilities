@@ -1,4 +1,5 @@
 #include<algorithm>
+#include<array>
 #include<cmath>
 #include<fstream>
 #include<iostream>
@@ -346,14 +347,29 @@ struct DoubleBits :public Command
     }
 };
 
+struct CrossProduct :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size < 6)
+            return "Put in the three components of the two vectors.";
+        using namespace std;
+        array<double, 3>vec1{ stod(args[0]), stod(args[1]), stod(args[2]) };
+        array<double, 3>vec2{ stod(args[3]), stod(args[4]), stod(args[5]) };
+        ostringstream oss;
+        oss << (vec1[1] * vec2[2] - vec1[2] * vec2[1]) << ", " << (vec2[0] * vec1[2] - vec2[2] * vec1[0]) << ", " << (vec1[0] * vec2[1] - vec1[1] * vec2[0]);
+        return oss.str();
+    }
+};
+
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace(), new ListFileGenerator(), new PrimeNumberListGenerator(), new CompositeTest(), new DoubleBits() };
-    CommandParser parser(names, cmds, 18);
+    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace(), new ListFileGenerator(), new PrimeNumberListGenerator(), new CompositeTest(), new DoubleBits(), new CrossProduct() };
+    CommandParser parser(names, cmds, 19);
     std::string command;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;
