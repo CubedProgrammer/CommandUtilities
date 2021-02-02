@@ -1,3 +1,4 @@
+#include<sstream>
 #include<CommandParser.hpp>
 Command::Command()
 {
@@ -48,7 +49,15 @@ Command& CommandParser::operator[](const std::string& str)
 std::string CommandParser::operator()(std::string* args, const size_t& len)
 {
     std::string ans = "That command was not found!";
-    if (cmds->find(args[0]) != cmds->end())
+    if(args[0] == "help")
+    {
+        std::ostringstream oss;
+        for(auto it = cmds->begin(); it != cmds->end(); ++it)
+            oss << it->first << ", ";
+        std::string s = oss.str();
+        return s.substr(0, s.size() - 2);
+    }
+    else if (cmds->find(args[0]) != cmds->end())
     {
         ans = (*this)[args[0]](args + 1, len - 1);
     }

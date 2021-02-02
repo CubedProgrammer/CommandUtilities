@@ -370,25 +370,45 @@ int main(int argl,char**argv)
     Command* pz = new ProbZ();
     Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace(), new ListFileGenerator(), new PrimeNumberListGenerator(), new CompositeTest(), new DoubleBits(), new CrossProduct() };
     CommandParser parser(names, cmds, 19);
-    std::string command;
+    std::string command, tmpc;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;
     std::getline(std::cin, command);
-    std::istringstream is(command);
+    bool esc = false;
     while (command != "exit" && command != "quit")
     {
         tokens.clear();
-        while (!is.eof())
+        for(unsigned i = 0; i < command.size(); i++)
         {
-            is >> command;
-            tokens.push_back(command);
+            if(command[i] == ' ')
+            {
+                if(!esc)
+                {
+                    tokens.push_back(tmpc);
+                    tmpc.clear();
+                }
+                else
+                {
+                    tmpc.back() = ' ';
+                    esc = false;
+                }
+            }
+            else
+            {
+                if(command[i] == '\\')
+                    esc = true;
+                else
+                    esc = false;
+                tmpc.push_back(command[i]);
+            }
         }
+        if(tmpc.size())
+            tokens.push_back(std::move(tmpc));
         arr = new std::string[tokens.size()];
         std::copy(tokens.begin(), tokens.end(), arr);
         std::cout << parser(arr, tokens.size()) << std::endl;
         delete[]arr;
         getline(std::cin, command);
-        is=std::istringstream(command);
     }
     std::cout << "Program has terminated." << std::endl;
 #ifdef _WIN32
