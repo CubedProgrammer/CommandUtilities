@@ -367,13 +367,23 @@ struct DotProduct :public Command
 {
     std::string run(std::string* args, const size_t& size, const size_t& calls)
     {
-        if (size < 6)
-            return "Put in the three components of the two vectors.";
+        if (size % 2 == 1)
+            return "Put in the components of the two vectors.";
         using namespace std;
-        array<double, 3>vec1{ stod(args[0]), stod(args[1]), stod(args[2]) };
-        array<double, 3>vec2{ stod(args[3]), stod(args[4]), stod(args[5]) };
+        vector<double>vec1(size / 2);
+        vector<double>vec2(size / 2);
+        for (size_t i = 0; i < size / 2; i++)
+        {
+            vec1[i] = stod(args[i]);
+            vec2[i] = stod(args[i + size / 2]);
+        }
+
+        double ans = 0;
+        for (size_t i = 0; i < size / 2; i++)
+            ans += vec1[i] * vec2[i];
+        
         ostringstream oss;
-        oss << vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
+        oss << ans;
         return oss.str();
     }
 };
