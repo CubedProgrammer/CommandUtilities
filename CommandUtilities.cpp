@@ -1,6 +1,7 @@
 #include<algorithm>
 #include<array>
 #include<cmath>
+#include<complex>
 #include<ctime>
 #include<fstream>
 #include<iostream>
@@ -421,14 +422,41 @@ struct CharVal :public Command
     }
 };
 
+struct ComplexMultiply :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if(size % 2 == 1)
+            return"Enter an even number of arguments.";
+        else if(size == 0)
+            return"Each pair of arguments will be parsed as a complex number and multiplied.";
+        using namespace std::complex_literals;
+        std::complex<double>result = 1, tmp;
+        for (size_t i = 0; i < size; i++)
+        {
+            if(i % 2 == 1)
+            {
+                tmp += std::stod(args[i]) * 1i;
+                result *= tmp;
+            }
+            else
+                tmp = std::stod(args[i]);
+        }
+        std::ostringstream oss;
+        oss << result;
+        return oss.str();
+    }
+};
+
+
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace(), new ListFileGenerator(), new PrimeNumberListGenerator(), new CompositeTest(), new DoubleBits(), new CrossProduct(), new DotProduct(), new TimeStamp(), new GetChar(), new CharVal() };
-    CommandParser parser(names, cmds, 23);
+    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace(), new ListFileGenerator(), new PrimeNumberListGenerator(), new CompositeTest(), new DoubleBits(), new CrossProduct(), new DotProduct(), new TimeStamp(), new GetChar(), new CharVal(), new ComplexMultiply() };
+    CommandParser parser(names, cmds, 24);
     std::string command, tmpc;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;
