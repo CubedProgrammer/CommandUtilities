@@ -455,12 +455,15 @@ struct RNG :public Command
 {
     std::string run(std::string* args, const size_t& size, const size_t& calls)
     {
-        if (size < 2)
-            return"Put in the lower and upper bound.";
+        if (size < 3)
+            return"Put in the lower and upper bound, and number of numbers.";
         long long lo = std::stoll(args[0]), hi = std::stoll(args[1]);
         long long range = hi - lo + 1;
-        long long num = dice() % range + lo;
-        return std::to_string(num);
+        size_t cnt = std::stoll(args[2]);
+        std::string str;
+        for (size_t i = 0; i < cnt; i++)
+            str += std::to_string(dice() % range + lo) + " ";
+        return str.substr(0, str.size() - 1);
     }
 };
 
