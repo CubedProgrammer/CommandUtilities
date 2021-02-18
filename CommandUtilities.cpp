@@ -20,6 +20,12 @@ extern"C"
     int move(const char *from, const char *to);
     int del(const char *file);
     int rmdir(const char *dir);
+#ifdef _WIN32
+    long long
+#else
+    long
+#endif
+    csloc(const char *dir, size_t cr, int sif, int ihf, const char *const*fexts, size_t fel);
 }
 
 struct StringHasher :public Command
@@ -467,14 +473,39 @@ struct RNG :public Command
     }
 };
 
+struct CSLOC :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size == 0)
+            return"Put directory path, true/false for displaying each file then true/false for ignoring hidden files, then number of required non-space characters, followed by file extensions.";
+        auto& dir = args[0];
+        int sif = 0, ihf;
+        size_t cr = 1, fel = 0;
+        if(size > 1)
+            sif = "true" == args[1];
+        if(size > 2)
+            ihf = "true" == args[2];
+        if(size > 3)
+            cr = std::stoll(args[3]);
+        if(size > 4)
+            fel = size - 4;
+        std::vector<const char *>fexts;
+        for (size_t i = 4; i < size; i++)
+            fexts.push_back(args[i].c_str());
+        auto sloc = csloc(dir.c_str(), cr, sif, ihf, fexts.data(), fel);
+        return std::to_string(sloc);
+    }
+};
+
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult", "rand" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult", "rand", "csloc" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace(), new ListFileGenerator(), new PrimeNumberListGenerator(), new CompositeTest(), new DoubleBits(), new CrossProduct(), new DotProduct(), new TimeStamp(), new GetChar(), new CharVal(), new ComplexMultiply(), new RNG() };
-    CommandParser parser(names, cmds, 25);
+    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace(), new ListFileGenerator(), new PrimeNumberListGenerator(), new CompositeTest(), new DoubleBits(), new CrossProduct(), new DotProduct(), new TimeStamp(), new GetChar(), new CharVal(), new ComplexMultiply(), new RNG(), new CSLOC() };
+    CommandParser parser(names, cmds, 26);
     std::string command, tmpc;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;
