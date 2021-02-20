@@ -5,6 +5,9 @@
 #include<ctime>
 #include<fstream>
 #include<iostream>
+#if __cplusplus >= 201703L
+#include<numeric>
+#endif
 #include<random>
 #include<sstream>
 #include<vector>
@@ -20,6 +23,10 @@ extern"C"
     int move(const char *from, const char *to);
     int del(const char *file);
     int rmdir(const char *dir);
+#if __cplusplus < 201703L
+    size_t lcm(size_t x, size_t y);
+    size_t gcd(size_t x, size_t y);
+#endif
 #ifdef _WIN32
     long long
 #else
@@ -498,14 +505,48 @@ struct CSLOC :public Command
     }
 };
 
+struct LCM :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size == 0)
+            return"Put in a list of numbers.";
+        size_t num = 1;
+        for (size_t i = 0; i < size; i++)
+#if __cplusplus < 201703L
+            num = lcm(num, stoll(args[i]));
+#else
+            num = std::lcm(num, stoll(args[i]));
+#endif
+        return std::to_string(num);
+    }
+};
+
+struct GCD :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size == 0)
+            return"Put in a list of numbers.";
+        size_t num = 0;
+        for (size_t i = 0; i < size; i++)
+#if __cplusplus < 201703L
+            num = gcd(num, stoll(args[i]));
+#else
+            num = std::gcd(num, stoll(args[i]));
+#endif
+        return std::to_string(num);
+    }
+};
+
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult", "rand", "csloc" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult", "rand", "csloc", "lcm", "gcd" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace(), new ListFileGenerator(), new PrimeNumberListGenerator(), new CompositeTest(), new DoubleBits(), new CrossProduct(), new DotProduct(), new TimeStamp(), new GetChar(), new CharVal(), new ComplexMultiply(), new RNG(), new CSLOC() };
-    CommandParser parser(names, cmds, 26);
+    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace(), new ListFileGenerator(), new PrimeNumberListGenerator(), new CompositeTest(), new DoubleBits(), new CrossProduct(), new DotProduct(), new TimeStamp(), new GetChar(), new CharVal(), new ComplexMultiply(), new RNG(), new CSLOC(), new LCM(), new GCD() };
+    CommandParser parser(names, cmds, 28);
     std::string command, tmpc;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;
