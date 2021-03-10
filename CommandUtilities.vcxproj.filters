@@ -42,6 +42,21 @@
     <ClCompile Include="file_word_replace.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="conv_num_base.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="csloc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gcd_lcm_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="get_sub_dir.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bytereader.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandParser.hpp">
@@ -49,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="TriangleSolver.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="get_sub_dir.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

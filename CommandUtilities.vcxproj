@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -150,17 +150,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ATS.c" />
+    <ClCompile Include="bytereader.c" />
     <ClCompile Include="CommandParser.cpp" />
     <ClCompile Include="CommandUtilities.cpp" />
+    <ClCompile Include="conv_num_base.c" />
+    <ClCompile Include="csloc.c" />
     <ClCompile Include="delete.c" />
     <ClCompile Include="file_word_counter.c" />
     <ClCompile Include="file_word_replace.c" />
+    <ClCompile Include="gcd_lcm_test.c" />
+    <ClCompile Include="get_sub_dir.c" />
     <ClCompile Include="list_file_generator.c" />
     <ClCompile Include="TriangleSolver.cpp" />
     <ClCompile Include="vector_polar_addition.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandParser.hpp" />
+    <ClInclude Include="get_sub_dir.h" />
     <ClInclude Include="TriangleSolver.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
