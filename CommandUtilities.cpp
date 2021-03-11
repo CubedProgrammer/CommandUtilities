@@ -558,7 +558,10 @@ struct BaseConverter :public Command
         if (size != 3)
             return"Put in the number, the base it is in, and the base to convert to.";
         char cbuf[100];
-        conv_num_base(args[0].c_str(), std::stoi(args[1]), std::stoi(args[2]), cbuf);
+        int from = std::stoi(args[1]), to = std::stoi(args[2]);
+        if(from < 2 || from > 36 || to < 2 || to > 36)
+            return"Invalid base, must be between 2 and 36.";
+        conv_num_base(args[0].c_str(), from, to, cbuf);
         return cbuf;
     }
 };
