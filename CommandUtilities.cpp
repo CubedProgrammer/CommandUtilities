@@ -35,6 +35,11 @@ extern"C"
     csloc(const char *dir, size_t cr, int sif, int ihf, const char *const*fexts, size_t fel);
     int readbytes(const char *fname);
     void conv_num_base(const char str[], int from, int to, char cbuf[]);
+    double amean(double x, double y);
+    double gmean(double x, double y);
+    double hmean(double x, double y);
+    double rmsq(double x, double y);
+    double agmean(double x, double y);
 }
 
 struct StringHasher :public Command
@@ -566,14 +571,63 @@ struct BaseConverter :public Command
     }
 };
 
+struct ArithMean :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size != 2)return"Put in two numbers.";
+        return std::to_string(amean(std::stod(args[0]), std::stod(args[1])));
+    }
+};
+
+struct GeoMean :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size != 2)return"Put in two numbers.";
+        return std::to_string(gmean(std::stod(args[0]), std::stod(args[1])));
+    }
+};
+
+struct HarmonicMean :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size != 2)return"Put in two numbers.";
+        return std::to_string(hmean(std::stod(args[0]), std::stod(args[1])));
+    }
+};
+
+struct RootMeanSquare :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size != 2)return"Put in two numbers.";
+        return std::to_string(rmsq(std::stod(args[0]), std::stod(args[1])));
+    }
+};
+
+struct ArithGeoMean :public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size != 2)return"Put in two numbers.";
+        return std::to_string(agmean(std::stod(args[0]), std::stod(args[1])));
+    }
+};
+
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult", "rand", "csloc", "lcm", "gcd", "readbytes", "baseconv" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult", "rand", "csloc", "lcm", "gcd", "readbytes", "baseconv", "arithmean", "geomean", "harmean", "rms", "arith-geo-mean" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
-    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(), new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(), new FileWordReplace(), new ListFileGenerator(), new PrimeNumberListGenerator(), new CompositeTest(), new DoubleBits(), new CrossProduct(), new DotProduct(), new TimeStamp(), new GetChar(), new CharVal(), new ComplexMultiply(), new RNG(), new CSLOC(), new LCM(), new GCD(), new ByteReader(), new BaseConverter() };
-    CommandParser parser(names, cmds, 30);
+    Command* cmds[] = { strh, zp, pz, new MeanStdevProb(), new TriangleSolver(), new VectorPolarAddition(), new StringReversal(),
+    new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(),
+    new FileWordReplace(), new ListFileGenerator(), new PrimeNumberListGenerator(), new CompositeTest(), new DoubleBits(), new CrossProduct(),
+    new DotProduct(), new TimeStamp(), new GetChar(), new CharVal(), new ComplexMultiply(), new RNG(), new CSLOC(), new LCM(), new GCD(),
+    new ByteReader(), new BaseConverter(), new ArithMean(), new GeoMean(), new HarmonicMean(), new RootMeanSquare(), new ArithGeoMean() };
+    CommandParser parser(names, cmds, 35);
     std::string command, tmpc;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;
