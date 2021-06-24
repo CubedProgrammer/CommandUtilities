@@ -40,6 +40,7 @@ extern"C"
     double hmean(double x, double y);
     double rmsq(double x, double y);
     double agmean(double x, double y);
+    int pythagorean_arithmancy(const char *name);
 }
 
 struct StringHasher :public Command
@@ -636,9 +637,17 @@ struct PrevPermutation: public Command
     }
 };
 
+struct ArithmancyCalculator: public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        return std::to_string(pythagorean_arithmancy(args->c_str()));
+    }
+};
+
 int main(int argl,char**argv)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult", "rand", "csloc", "lcm", "gcd", "readbytes", "baseconv", "arithmean", "geomean", "harmean", "rms", "arith-geo-mean", "nextperm", "prevperm" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult", "rand", "csloc", "lcm", "gcd", "readbytes", "baseconv", "arithmean", "geomean", "harmean", "rms", "arith-geo-mean", "nextperm", "prevperm", "arithmancy" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
@@ -646,8 +655,8 @@ int main(int argl,char**argv)
     new WordPyramid(), new StringDuper(), new SetTrash(), new TempDelete(), new FileWordCounter(), new VectorCylindricalAddition(),
     new FileWordReplace(), new ListFileGenerator(), new PrimeNumberListGenerator(), new CompositeTest(), new DoubleBits(), new CrossProduct(),
     new DotProduct(), new TimeStamp(), new GetChar(), new CharVal(), new ComplexMultiply(), new RNG(), new CSLOC(), new LCM(), new GCD(),
-    new ByteReader(), new BaseConverter(), new ArithMean(), new GeoMean(), new HarmonicMean(), new RootMeanSquare(), new ArithGeoMean(), new NextPermutation(), new PrevPermutation() };
-    CommandParser parser(names, cmds, 37);
+    new ByteReader(), new BaseConverter(), new ArithMean(), new GeoMean(), new HarmonicMean(), new RootMeanSquare(), new ArithGeoMean(), new NextPermutation(), new PrevPermutation(), new ArithmancyCalculator() };
+    CommandParser parser(names, cmds, 38);
     std::string command, tmpc;
     std::vector<std::string>tokens(0);
     std::string* arr = nullptr;
