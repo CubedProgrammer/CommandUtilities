@@ -57,6 +57,12 @@
     <ClCompile Include="bytereader.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="arithmancy.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="means.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandParser.hpp">

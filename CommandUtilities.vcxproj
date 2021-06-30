@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="arithmancy.c" />
     <ClCompile Include="ATS.c" />
     <ClCompile Include="bytereader.c" />
     <ClCompile Include="CommandParser.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="gcd_lcm_test.c" />
     <ClCompile Include="get_sub_dir.c" />
     <ClCompile Include="list_file_generator.c" />
+    <ClCompile Include="means.c" />
     <ClCompile Include="TriangleSolver.cpp" />
     <ClCompile Include="vector_polar_addition.c" />
   </ItemGroup>
