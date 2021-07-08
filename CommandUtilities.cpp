@@ -661,8 +661,10 @@ struct PolygonArea : public Command
 #else
         using namespace std::numbers;
 #endif
-        double part = length * length * tan(pi * (sides - 2) / sides / 2) / 4;
-        return std::to_string(part * sides);
+        double x = sides * length * length * tan(pi * (sides - 2) / sides / 2) / 4;
+        double y = sides * length * length / tan(pi * (sides - 2) / sides / 2);
+        double z = sides * length * length * sin(pi * (sides - 2) / sides) / 2;
+        return"For side length " + std::to_string(x) + "\nFor apothem " + std::to_string(y) + "\nFor radius " + std::to_string(z);
     }
 };
 
