@@ -63,6 +63,9 @@
     <ClCompile Include="means.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="file_redirector.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandParser.hpp">

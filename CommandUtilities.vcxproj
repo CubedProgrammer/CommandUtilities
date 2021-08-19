@@ -157,6 +157,7 @@
     <ClCompile Include="conv_num_base.c" />
     <ClCompile Include="csloc.c" />
     <ClCompile Include="delete.c" />
+    <ClCompile Include="file_redirector.c" />
     <ClCompile Include="file_word_counter.c" />
     <ClCompile Include="file_word_replace.c" />
     <ClCompile Include="gcd_lcm_test.c" />
