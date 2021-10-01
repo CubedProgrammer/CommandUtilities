@@ -706,7 +706,17 @@ struct Pause : public Command
     }
 };
 
+int entry(std::vector<std::string>&args);
+
 int main(int argl,char**argv)
+{
+    std::vector<std::string>args(argl);
+    for (size_t i = 0; i < args.size(); i++)
+        args[i] = argv[i];
+    return entry(args);
+}
+
+int entry(std::vector<std::string>&args)
 {
     std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult", "rand", "csloc", "lcm", "gcd", "readbytes", "baseconv", "arithmean", "geomean", "harmean", "rms", "arith-geo-mean", "nextperm", "prevperm", "arithmancy", "regular_polygon_area", "exec", "getip", "pause" };
     Command* strh = new StringHasher();
@@ -720,9 +730,17 @@ int main(int argl,char**argv)
     new NextPermutation(), new PrevPermutation(), new ArithmancyCalculator(), new PolygonArea(), new FileRedirector(), new GetIP(),
     new Pause() };
     CommandParser parser(names, cmds, 42);
+    std::string* arr = nullptr;
+    if(args.size() > 1)
+    {
+        arr = new std::string[args.size() - 1];
+        std::copy(args.begin() + 1, args.end(), arr);
+        std::cout << parser(arr, args.size()) << std::endl;
+        delete[]arr;
+        return 0;
+    }
     std::string command, tmpc;
     std::vector<std::string>tokens(0);
-    std::string* arr = nullptr;
     std::getline(std::cin, command);
     bool esc = false;
     while (command != "exit" && command != "quit")
