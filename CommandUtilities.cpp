@@ -47,6 +47,7 @@ extern"C"
     void file_redirect(const char *cmd, const char *in, const char *out, const char *err);
     void get_ip(const char *host, char *cbuf);
     void console_pause(void);
+    int horizon_dist(double radius, double height, double *direct, double *foot);
 }
 
 struct StringHasher :public Command
@@ -706,6 +707,23 @@ struct Pause : public Command
     }
 };
 
+struct HorizonDist : public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if(size == 0 || size > 2)
+            return"One or two arguments are expected, radius of planet and height.";
+        double r, h;
+        if(size == 1)
+            r = 6378100, h = std::stod(args[0]);
+        else
+            r = std::stod(args[0]), h = std::stod(args[1]);
+        double u, v;
+        horizon_dist(r, h, &u, &v);
+        return std::to_string(u) + " m from head to horizon, " + std::to_string(v) + " m from ground level.";
+    }
+};
+
 int entry(std::vector<std::string>&args);
 
 int main(int argl,char**argv)
@@ -718,7 +736,7 @@ int main(int argl,char**argv)
 
 int entry(std::vector<std::string>&args)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult", "rand", "csloc", "lcm", "gcd", "readbytes", "baseconv", "arithmean", "geomean", "harmean", "rms", "arith-geo-mean", "nextperm", "prevperm", "arithmancy", "regular_polygon_area", "exec", "getip", "pause" };
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult", "rand", "csloc", "lcm", "gcd", "readbytes", "baseconv", "arithmean", "geomean", "harmean", "rms", "arith-geo-mean", "nextperm", "prevperm", "arithmancy", "regular_polygon_area", "exec", "getip", "pause", "horizon" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
@@ -728,14 +746,14 @@ int entry(std::vector<std::string>&args)
     new DotProduct(), new TimeStamp(), new GetChar(), new CharVal(), new ComplexMultiply(), new RNG(), new CSLOC(), new LCM(), new GCD(),
     new ByteReader(), new BaseConverter(), new ArithMean(), new GeoMean(), new HarmonicMean(), new RootMeanSquare(), new ArithGeoMean(),
     new NextPermutation(), new PrevPermutation(), new ArithmancyCalculator(), new PolygonArea(), new FileRedirector(), new GetIP(),
-    new Pause() };
-    CommandParser parser(names, cmds, 42);
+    new Pause(), new HorizonDist() };
+    CommandParser parser(names, cmds, 43);
     std::string* arr = nullptr;
     if(args.size() > 1)
     {
         arr = new std::string[args.size() - 1];
         std::copy(args.begin() + 1, args.end(), arr);
-        std::cout << parser(arr, args.size()) << std::endl;
+        std::cout << parser(arr, args.size() - 1) << std::endl;
         delete[]arr;
         return 0;
     }
