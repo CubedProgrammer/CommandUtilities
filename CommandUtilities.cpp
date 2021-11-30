@@ -1,4 +1,7 @@
 #include<algorithm>
+#ifdef _WIN32
+#include<windows.h>
+#endif
 #include<array>
 #include<cmath>
 #include<complex>
@@ -724,6 +727,22 @@ struct HorizonDist : public Command
     }
 };
 
+struct CMYRGB : public Command
+{
+    std::string run(std::string* args, const size_t& size, const size_t& calls)
+    {
+        if (size != 3)
+            return"Three arguments are needed.";
+        int r = 255 - std::stoi(args[0]);
+        int g = 255 - std::stoi(args[1]);
+        int b = 255 - std::stoi(args[2]);
+        using namespace std::string_literals;
+        std::string back = "\033\13348;2;"s + std::to_string(r) + ';' + std::to_string(g) + ';' + std::to_string(b) + 'm';
+        std::string fore = "\033\13338;2;"s + std::to_string(255 - r) + ';' + std::to_string(255 - g) + ';' + std::to_string(255 - b) + 'm';
+        return back + fore + std::to_string(r) + ' ' + std::to_string(g) + ' ' + std::to_string(b) + "\033\1330m";
+    }
+};
+
 int entry(std::vector<std::string>&args);
 
 int main(int argl,char**argv)
@@ -736,7 +755,14 @@ int main(int argl,char**argv)
 
 int entry(std::vector<std::string>&args)
 {
-    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult", "rand", "csloc", "lcm", "gcd", "readbytes", "baseconv", "arithmean", "geomean", "harmean", "rms", "arith-geo-mean", "nextperm", "prevperm", "arithmancy", "regular_polygon_area", "exec", "getip", "pause", "horizon" };
+#ifdef _WIN32
+    DWORD cm;
+    HANDLE ho = GetStdHandle(STD_OUTPUT_HANDLE);
+    GetConsoleMode(ho, &cm);
+    cm |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(ho, cm);
+#endif
+    std::string names[] = { "jhash","zprob","probz","mean_stdev_prob","solvet","vector_polar_addition","reversal","pyramid","dupe","settrash","tmpdel","file_word_counter", "vector_cylindrical_addition","file_word_replace","list_file_generator","primes","prime","double_raw_bits", "crossmult", "dotmult", "timestamp", "char", "ascii", "compmult", "rand", "csloc", "lcm", "gcd", "readbytes", "baseconv", "arithmean", "geomean", "harmean", "rms", "arith-geo-mean", "nextperm", "prevperm", "arithmancy", "regular_polygon_area", "exec", "getip", "pause", "horizon", "cmyrgb" };
     Command* strh = new StringHasher();
     Command* zp = new ZProb();
     Command* pz = new ProbZ();
@@ -746,8 +772,8 @@ int entry(std::vector<std::string>&args)
     new DotProduct(), new TimeStamp(), new GetChar(), new CharVal(), new ComplexMultiply(), new RNG(), new CSLOC(), new LCM(), new GCD(),
     new ByteReader(), new BaseConverter(), new ArithMean(), new GeoMean(), new HarmonicMean(), new RootMeanSquare(), new ArithGeoMean(),
     new NextPermutation(), new PrevPermutation(), new ArithmancyCalculator(), new PolygonArea(), new FileRedirector(), new GetIP(),
-    new Pause(), new HorizonDist() };
-    CommandParser parser(names, cmds, 43);
+    new Pause(), new HorizonDist(), new CMYRGB() };
+    CommandParser parser(names, cmds, 44);
     std::string* arr = nullptr;
     if(args.size() > 1)
     {

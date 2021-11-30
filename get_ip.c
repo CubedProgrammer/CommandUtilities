@@ -1,6 +1,13 @@
+#ifndef _WIN32
 #include<arpa/inet.h>
+#else
+#include<ws2tcpip.h>
+#pragma comment(lib, "ws2_32")
+#endif
 #include<errno.h>
+#ifndef _WIN32
 #include<netdb.h>
+#endif
 #include<stdio.h>
 #include<string.h>
 void get_ip(const char *host, char *cbuf)

@@ -66,6 +66,15 @@
     <ClCompile Include="file_redirector.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="get_ip.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="horizon_dist.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pause.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommandParser.hpp">
